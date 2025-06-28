@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <title>點名系統：老師入口頁</title>
+  <style>
+    body { font-family: sans-serif; padding: 20px; max-width: 500px; margin: auto; }
+    h2 { margin-bottom: 20px; }
+    button { padding: 10px 20px; margin-top: 10px; }
+    #qrcode { margin-top: 20px; }
+    input { padding: 8px; width: 100%; margin-top: 10px; }
+  </style>
+</head>
+<body>
+  <h2>老師入口｜產生今日簽到 QR Code（不含班級）</h2>
+
+  <button onclick="generateQRCode()">產生今日簽到網址與 QR Code</button>
+
+  <div id="link" style="margin-top: 20px;"></div>
+  <div id="qrcode"></div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+  <script>
+    function generateQRCode() {
+      const today = new Date().toISOString().slice(0, 10); // yyyy-mm-dd
+      const url = `https://yourdomain.com/attendance.html?date=${today}`;
+
+      document.getElementById('link').innerHTML = `今日簽到連結：<a href="${url}" target="_blank">${url}</a>`;
+
+      document.getElementById('qrcode').innerHTML = "";
+      new QRCode(document.getElementById("qrcode"), {
+        text: url,
+        width: 256,
+        height: 256
+      });
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <title>學生簽到</title>
+  <style>
+    body { font-family: sans-serif; padding: 20px; max-width: 400px; margin: auto; }
+    label { display: block; margin-top: 10px; }
+    input { width: 100%; padding: 8px; margin-top: 4px; }
+    button { margin-top: 20px; padding: 10px 20px; }
+    .success { color: green; margin-top: 10px; }
+  </style>
+</head>
+<body>
+  <h2>學生簽到表單</h2>
+  <form id="checkinForm">
+    <label>姓名：<input type="text" name="name" required></label>
+    <button type="submit">簽到</button>
+  </form>
+  <div class="success" id="result"></div>
+
+  <script>
+    const scriptURL = 'https://script.google.com/macros/s/YOUR_SCRIPT_ID/exec'; // 請替換為你的 Apps Script 網址
+
+    function getDateFromURL() {
+      const params = new URLSearchParams(window.location.search);
+      return params.get("date") || new Date().toISOString().slice(0, 10);
+    }
+
+    document.getElementById('checkinForm').addEventListener('submit', async function(e) {
+      e.preventDefault();
+      const form = e.target;
+      const formData = new FormData(form);
+      formData.append('timestamp', new Date().toLocaleString());
+      formData.append('date', getDateFromURL());
+
+      try {
+        const response = await fetch(scriptURL, { method: 'POST', body: formData });
+        if (response.ok) {
+          document.getElementById('result').textContent = '✔ 簽到完成';
+          form.reset();
+        } else {
+          document.getElementById('result').textContent = '⚠ 簽到失敗，請稍後再試';
+        }
+      } catch (error) {
+        document.getElementById('result').textContent = '⚠ 無法連線';
+      }
+    });
+  </script>
+</body>
+</html>
