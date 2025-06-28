@@ -23,7 +23,7 @@
   <script>
     function generateQRCode() {
       const today = new Date().toISOString().slice(0, 10); // yyyy-mm-dd
-      const url = `https://ligi0202.github.io/attendance.html?date=${today}`;
+      const url = `https://ligi0202.github.io/-/StudentAttendance.html?date=${today}`;
 
       document.getElementById('link').innerHTML = `今日簽到連結：<a href="${url}" target="_blank">${url}</a>`;
 
